@@ -1,6 +1,6 @@
 ---
 title: "Beer_Brewery Assessment"
-author: "Eric McCandless"
+author: "Eric McCandless, Jordan Kassof"
 date: "October 5, 2017"
 output: html_document
   keep_md: TRUE
