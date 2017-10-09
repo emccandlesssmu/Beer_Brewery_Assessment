@@ -1,31 +1,45 @@
 ---
-title: "Beer_Brewery Assessment"
+title: "U.S. Beer Brewery Assessment"
 author: "Eric McCandless, Jordan Kassof"
 date: "October 5, 2017"
-output: html_document
-  keep_md: TRUE
+output: 
+  html_document:
+    keep_md: TRUE
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+## Introduction
+
+Market research about U.S. beers and breweries. Etc.
+
+#### Question 1: Which states have the most breweries?
+
+```{r brewery_by_state, message = FALSE, warning=FALSE, fig.align='center'}
+source('./analysis/Breweries_Per_State.R')
+
+#install.packages("choroplethr")
+#install.packages("choroplethrMaps")
+library(choroplethr)
+map_data <- State_Counts
+names(map_data) <- c("region.abb", "value")
+map_data$region <- tolower(state.name[match(map_data$region.abb,state.abb)])
+map_data$region[is.na(map_data$region)] <- "district of columbia"
+state_choropleth(map_data,
+                 title = "U.S. Distribution of Breweries",
+                 legend = "Number of Breweries",
+                 num_colors = 8)
+
+knitr::kable(cbind(State_Counts[1:26, ], rbind(State_Counts[27:51, ], c("", ""))))
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+#### Question 2
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+#### Question 3
 
-```{r cars}
-summary(cars)
-```
+#### Question 4
 
-## Including Plots
+#### Question 5
 
-You can also embed plots, for example:
+#### Question 6
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+#### Question 7
