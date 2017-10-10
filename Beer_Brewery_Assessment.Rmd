@@ -14,7 +14,7 @@ Market research about U.S. beers and breweries. Etc.
 #### Question 1: Which states have the most breweries?
 
 ```{r brewery_by_state, message = FALSE, warning=FALSE, fig.align='center'}
-source('./analysis/Breweries_Per_State.R')
+source('./analysis/Q1_Brewery_Per_State.R')
 
 #install.packages("choroplethr")
 #install.packages("choroplethrMaps")
@@ -27,15 +27,22 @@ state_choropleth(map_data,
                  title = "U.S. Distribution of Breweries",
                  legend = "Number of Breweries",
                  num_colors = 8)
-
 knitr::kable(cbind(State_Counts[1:26, ], rbind(State_Counts[27:51, ], c("", ""))))
 ```
 
 
-#### Question 2
+#### Question 2: Merging bBeer and brewery data.
 
-#### Question 3
+```{r data_merge, message = FALSE, warning=FALSE, fig.align='center'}
+source('./analysis/Q2_Merge.R')
+head(All_Data, 6)
+tail(All_Data, 6)
+```
 
+#### Question 3: Determine the number of NAs in each column.
+```{r NAs, message = FALSE, warning=FALSE, fig.align='center'}
+summary(All_Data)
+```
 #### Question 4
 
 #### Question 5
