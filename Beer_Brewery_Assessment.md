@@ -123,10 +123,56 @@ tail(All_Data, 6)
 ## 2410     Anchorage    AK
 ```
 
+#### Question 3: Determine the number of NAs in each column.
 
-#### Question 3
+```r
+sapply(All_Data, function(x) sum(is.na(x)))    
+```
 
-#### Question 4
+```
+## Brewery_id     Name.x    Beer_ID        ABV        IBU      Style 
+##          0          0          0         62       1005          0 
+##     Ounces     Name.y       City      State 
+##          0          0          0          0
+```
+
+
+#### Question 4: Calculate Median Alcohol Content and International Bitterness Units
+
+
+```r
+source("./analysis/Q4_Med_IBU_ABV.R")
+
+library(ggplot2)
+library(forcats)
+
+ggplot(meds_by_state, aes(x = fct_reorder(State, ABV_Medians))) +
+  geom_col(aes(y = ABV_Medians, fill = ABV_Medians)) +
+  xlab("States") +
+  ylab("Alcohol by Volume") +
+  ggtitle("Median ABV by State") +
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1),
+    legend.position = 'none'
+  )
+```
+
+<img src="Beer_Brewery_Assessment_files/figure-html/meds_ibv_abu-1.png" style="display: block; margin: auto;" />
+
+```r
+ggplot(meds_by_state, aes(x = fct_reorder(State, IBU_Medians))) +
+  geom_col(aes(y = IBU_Medians, fill = IBU_Medians)) +
+  xlab("States") +
+  ylab("International Bitterness Units") +
+  ggtitle("Median Bitterness by State") +
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1),
+    legend.position = 'none'
+  )
+```
+
+<img src="Beer_Brewery_Assessment_files/figure-html/meds_ibv_abu-2.png" style="display: block; margin: auto;" />
+
 
 #### Question 5
 

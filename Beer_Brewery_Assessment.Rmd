@@ -33,17 +33,47 @@ knitr::kable(cbind(State_Counts[1:26, ], rbind(State_Counts[27:51, ], c("", ""))
 
 #### Question 2: Merging bBeer and brewery data.
 
-```{r data_merge, message = FALSE, warning=FALSE, fig.align='center'}
+```{r data_merge}
 source('./analysis/Q2_Merge.R')
 head(All_Data, 6)
 tail(All_Data, 6)
 ```
 
 #### Question 3: Determine the number of NAs in each column.
-```{r NAs, message = FALSE, warning=FALSE, fig.align='center'}
-summary(All_Data)
+```{r NAs}
+sapply(All_Data, function(x) sum(is.na(x)))    
 ```
-#### Question 4
+
+
+#### Question 4: Calculate Median Alcohol Content and International Bitterness Units
+
+```{r meds_ibv_abu, message=FALSE, warning=FALSE, fig.align='center'}
+source("./analysis/Q4_Med_IBU_ABV.R")
+
+library(ggplot2)
+library(forcats)
+
+ggplot(meds_by_state, aes(x = fct_reorder(State, ABV_Medians))) +
+  geom_col(aes(y = ABV_Medians, fill = ABV_Medians)) +
+  xlab("States") +
+  ylab("Alcohol by Volume") +
+  ggtitle("Median ABV by State") +
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1),
+    legend.position = 'none'
+  )
+
+ggplot(meds_by_state, aes(x = fct_reorder(State, IBU_Medians))) +
+  geom_col(aes(y = IBU_Medians, fill = IBU_Medians)) +
+  xlab("States") +
+  ylab("International Bitterness Units") +
+  ggtitle("Median Bitterness by State") +
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1),
+    legend.position = 'none'
+  )
+```
+
 
 #### Question 5
 
