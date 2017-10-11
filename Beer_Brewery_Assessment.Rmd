@@ -1,17 +1,54 @@
 ---
 title: "U.S. Beer Brewery Assessment"
-author: "Eric McCandless, Jordan Kassof"
+author: "Jordan Kassof, Eric McCandless (JKEM Market Research)"
 date: "October 5, 2017"
 output: 
   html_document:
     keep_md: TRUE
 ---
 
-## Introduction
+$~$
 
-Market research about U.S. beers and breweries. Etc.
+## Introduction/Background
 
-#### Question 1: Which states have the most breweries?
+$~$
+
+### Beers, Inc. has contracted with JKEM Market Research to assess the U.S. landscape of breweries and craft beer content.  Specifically, Beers, Inc. has asked JKEM to provide the answers to a few specific questions.  
+#### - How many breweries are present in each state?
+#### - Which state has the maximum alcoholic beer?
+#### - Which state has the most bitter beer?   
+
+### In addition to providing these answers, JKEM will also provide bar charts, summary statistics, and scatterplots to show further insights.  
+
+$~$
+
+## Sources
+
+$~$
+
+### JKEM Market Research used data from Tibbett's Beer Lovers' Association to conduct this analysis.  Data files used in this analysis:
+#### - Beers.csv
+#### - Breweries.csv
+
+$~$
+
+## Additional Information
+
+$~$
+
+### Additional detailed information about this assessment can be found in the README file within the repository.  
+
+$~$
+
+## Analysis/Findings
+
+$~$
+
+### How many breweries are present in each state?
+
+$~$
+
+#### The purpose of the following code is to create a map and table that show how many breweries are present by state.  
 
 ```{r brewery_by_state, message = FALSE, warning=FALSE, fig.align='center'}
 source('./analysis/Q1_Brewery_Per_State.R')
@@ -30,8 +67,19 @@ state_choropleth(map_data,
 knitr::kable(cbind(State_Counts[1:26, ], rbind(State_Counts[27:51, ], c("", ""))))
 ```
 
+$~$
 
-#### Question 2: Merging bBeer and brewery data.
+#### Key insights:
+##### - Colorado (47), California (39), and Michigan (32) have the most breweries.
+##### - Other top states with 25+ breweries, include Oregon (29), Texas (28), and Pennsylvania (25).
+
+$~$
+
+### Which state has the maximum alcoholic beer?
+
+$~$
+
+#### The purpose of the following r code is to merge the Beers.csv data set that has AVB (Alcohol by Volume of Beer) by beer with the Breweries.csv dataset that has beers by state.  The new merged file is called Merged_Data.csv.  We also ran the top 6 records and bottom 6 records to check success of merge.
 
 ```{r data_merge}
 source('./analysis/Q2_Merge.R')
@@ -39,13 +87,27 @@ head(All_Data, 6)
 tail(All_Data, 6)
 ```
 
-#### Question 3: Determine the number of NAs in each column.
+$~$
+
+#### Key insights:
+##### - The output show that the the two data sets are successfully merged into Merged_Data.csv.
+
+$~$
+
+#### The purpose of the following r code is to determine the number of NAs in each column.
+
 ```{r NAs}
 sapply(All_Data, function(x) sum(is.na(x)))    
 ```
 
+$~$
 
-#### Question 4: Calculate Median Alcohol Content and International Bitterness Units
+#### Key insights:
+##### - The ABV (Alcohol by Volume) column has 62 NAs and the IBU (International Bitterness Units) column has 1,005 NAs. No other column has NAs.
+
+$~$
+
+#### The purpose of the following code was to calculate the median of alcohol by volume (ABV) for each state and show a bar chart highlighting data: 
 
 ```{r meds_ibv_abu, message=FALSE, warning=FALSE, fig.align='center'}
 source("./analysis/Q4_Med_IBU_ABV.R")
@@ -62,6 +124,18 @@ ggplot(meds_by_state, aes(x = fct_reorder(State, ABV_Medians))) +
     axis.text.x = element_text(angle = 90, hjust = 1),
     legend.position = 'none'
   )
+```
+
+# JORDAN - WE SHOULD AD VALUES TO BAR GRAPHS, SO WE CAN EASILY SUMMARIZE FINDINGS WITH VALUES.  
+
+$~$
+
+#### Key insights, include:
+#### - ???
+
+$~$
+
+### Which state has the most bitter beer?  
 
 ggplot(meds_by_state, aes(x = fct_reorder(State, IBU_Medians))) +
   geom_col(aes(y = IBU_Medians, fill = IBU_Medians)) +
@@ -80,3 +154,5 @@ ggplot(meds_by_state, aes(x = fct_reorder(State, IBU_Medians))) +
 #### Question 6
 
 #### Question 7
+
+### Conclusion
