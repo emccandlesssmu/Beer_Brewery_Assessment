@@ -11,3 +11,11 @@ meds_by_state <-
       ABV_Medians = median(ABV, na.rm = TRUE),
       IBU_Medians = median(IBU, na.rm = TRUE)
     )
+
+max_state_abv <- meds_by_state %>%
+  top_n(1, ABV_Medians) %>%
+  slice(1)
+
+max_state_ibu <- meds_by_state %>%
+  top_n(1, IBU_Medians) %>%
+  slice(1)

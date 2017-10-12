@@ -7,50 +7,37 @@ output:
     keep_md: TRUE
 ---
 
-$~$
-
 ## Introduction/Background
 
-$~$
+Beers, Inc. has contracted with JKEM Market Research to assess the U.S. landscape of breweries and craft beer content.  Specifically, Beers, Inc. has asked JKEM to provide the answers to a few specific questions.  
+- How many breweries are present in each state?
+- Which state has the maximum alcoholic beer?
+- Which state has the most bitter beer?   
 
-### Beers, Inc. has contracted with JKEM Market Research to assess the U.S. landscape of breweries and craft beer content.  Specifically, Beers, Inc. has asked JKEM to provide the answers to a few specific questions.  
-#### - How many breweries are present in each state?
-#### - Which state has the maximum alcoholic beer?
-#### - Which state has the most bitter beer?   
+In addition to providing these answers, JKEM will also provide bar charts, summary statistics, and scatterplots to show further insights.  
 
-### In addition to providing these answers, JKEM will also provide bar charts, summary statistics, and scatterplots to show further insights.  
-
-$~$
 
 ## Sources
 
-$~$
 
-### JKEM Market Research used data from Tibbett's Beer Lovers' Association to conduct this analysis.  Data files used in this analysis:
-#### - Beers.csv
-#### - Breweries.csv
+JKEM Market Research used data from Tibbett's Beer Lovers' Association to conduct this analysis.  Data files used in this analysis:
+- Beers.csv
+- Breweries.csv
 
-$~$
 
 ## Additional Information
 
-$~$
 
-### Additional detailed information about this assessment can be found in the README file within the repository.  
+Additional detailed information about this assessment can be found in the README file within the repository.  
 
-$~$
 
 ## Analysis/Findings
 
-$~$
-
 ### How many breweries are present in each state?
 
-$~$
-
-#### The purpose of the following code is to create a map and table that show how many breweries are present by state.  
-
+The purpose of the following code is to get a count of breweries for each state. That is handled inside the "Q1_Brewery_Per_State.R." From there we map the state abbreviations to state names, and produce a choropleth map to visually display the results. Last, we print a display table of the exact counts for each state.
 ```{r brewery_by_state, message = FALSE, warning=FALSE, fig.align='center'}
+# Source the script for brewery by state analysis from analysis folder
 source('./analysis/Q1_Brewery_Per_State.R')
 
 #install.packages("choroplethr")
@@ -67,19 +54,16 @@ state_choropleth(map_data,
 knitr::kable(cbind(State_Counts[1:26, ], rbind(State_Counts[27:51, ], c("", ""))))
 ```
 
-$~$
 
-#### Key insights:
-##### - Colorado (47), California (39), and Michigan (32) have the most breweries.
-##### - Other top states with 25+ breweries, include Oregon (29), Texas (28), and Pennsylvania (25).
+#### Key insights:  
+- Colorado (47), California (39), and Michigan (32) have the most breweries.  
+- Other top states with 25+ breweries, include Oregon (29), Texas (28), and Pennsylvania (25).  
 
-$~$
 
 ### Which state has the maximum alcoholic beer?
 
-$~$
 
-#### The purpose of the following r code is to merge the Beers.csv data set that has AVB (Alcohol by Volume of Beer) by beer with the Breweries.csv dataset that has beers by state.  The new merged file is called Merged_Data.csv.  We also ran the top 6 records and bottom 6 records to check success of merge.
+The purpose of the following r code is to merge the Beers.csv data set that has AVB (Alcohol by Volume of Beer) by beer with the Breweries.csv dataset that has beers by state.  The new merged file is called Merged_Data.csv.  We also ran the top 6 records and bottom 6 records to check success of merge.
 
 ```{r data_merge}
 source('./analysis/Q2_Merge.R')
@@ -87,29 +71,25 @@ head(All_Data, 6)
 tail(All_Data, 6)
 ```
 
-$~$
 
 #### Key insights:
-##### - The output show that the the two data sets are successfully merged into Merged_Data.csv.
+- The output show that the the two data sets are successfully merged into Merged_Data.csv.
 
-$~$
 
-#### The purpose of the following r code is to determine the number of NAs in each column.
+The purpose of the following r code is to determine the number of NAs in each column.
 
 ```{r NAs}
 sapply(All_Data, function(x) sum(is.na(x)))    
 ```
 
-$~$
 
 #### Key insights:
-##### - The ABV (Alcohol by Volume) column has 62 NAs and the IBU (International Bitterness Units) column has 1,005 NAs. No other column has NAs.
+- The ABV (Alcohol by Volume) column has 62 NAs and the IBU (International Bitterness Units) column has 1,005 NAs. No other column has NAs.
 
-$~$
 
-#### The purpose of the following code was to calculate the median of alcohol by volume (ABV) for each state and show a bar chart highlighting data: 
+The purpose of the following code was to calculate the median of alcohol by volume (ABV) for each state and show a bar chart highlighting data: 
 
-```{r meds_ibv_abu, message=FALSE, warning=FALSE, fig.align='center'}
+```{r meds_abv, message=FALSE, warning=FALSE, fig.align='center'}
 source("./analysis/Q4_Med_IBU_ABV.R")
 
 library(ggplot2)
@@ -126,17 +106,15 @@ ggplot(meds_by_state, aes(x = fct_reorder(State, ABV_Medians))) +
   )
 ```
 
-# JORDAN - WE SHOULD AD VALUES TO BAR GRAPHS, SO WE CAN EASILY SUMMARIZE FINDINGS WITH VALUES.  
 
-$~$
 
 #### Key insights, include:
-#### - ???
 
-$~$
+
 
 ### Which state has the most bitter beer?  
 
+```{r meds_ibu, fig.align='center'}
 ggplot(meds_by_state, aes(x = fct_reorder(State, IBU_Medians))) +
   geom_col(aes(y = IBU_Medians, fill = IBU_Medians)) +
   xlab("States") +
@@ -149,10 +127,25 @@ ggplot(meds_by_state, aes(x = fct_reorder(State, IBU_Medians))) +
 ```
 
 
-#### Question 5
+#### Question 5: State with max ABV beer? State with max IBU beer?
 
-#### Question 6
+```{r}
 
-#### Question 7
+```
+
+#### Question 6: Summary Statistics for ABV?
+
+```{r abv_summary}
+c(StDev = sd(All_Data$ABV, na.rm = TRUE), summary(All_Data$ABV))
+```
+
+#### Question 7: Alcohol content vs bitterness scatterplot with line of best fit
+
+```{r alc_vs_bitter, fig.align='center'}
+
+
+```
+
+
 
 ### Conclusion
