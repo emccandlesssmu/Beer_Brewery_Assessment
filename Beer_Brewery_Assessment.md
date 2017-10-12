@@ -214,7 +214,7 @@ ggplot(meds_by_state, aes(x = fct_reorder(State, ABV_Medians))) +
 ```r
 ggplot(meds_by_state, aes(x = fct_reorder(State, IBU_Medians))) +
   geom_col(aes(y = IBU_Medians, fill = IBU_Medians)) +
-  geom_text(aes(x = max_state_ibu$State, y = max_state_ibu$IBU_Medians + max_state_ibu$IBU_Medians *.05, label = max_state_ibu$IBU_Medians), nudge_x = -.5, size = 4) +
+  geom_text(aes(x = max_state_ibu$State, y = max_state_ibu$IBU_Medians + max_state_ibu$IBU_Medians *.05, label = max_state_ibu$IBU_Medians), size = 4) +
   xlab("States") +
   ylab("International Bitterness Units") +
   ggtitle("Median Bitterness by State") +
