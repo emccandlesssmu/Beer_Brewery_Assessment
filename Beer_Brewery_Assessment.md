@@ -271,9 +271,29 @@ c(StDev = sd(All_Data$ABV, na.rm = TRUE), summary(All_Data$ABV))
 ##  0.12800000 62.00000000
 ```
 
-#### Question 7: Alcohol content vs bitterness scatterplot with line of best fit
+#### Question 7: Alcohol by Volume vs International Bitterness Units scatterplot with line of best fit
 
 
+```r
+ggplot(All_Data, aes(x=ABV, y=IBU)) +
+    ggtitle('Relationship Between Alcohol by Volume and International Bitterness Units') +
+    labs(y= "International Bitterness Units", x = "Alcohol by Volume") +
+    xlim(0, .15) +
+    ylim(0, 150) +
+    geom_point(shape=1, color='red') +    
+    geom_smooth(method=lm,   
+                se=FALSE)    
+```
+
+```
+## Warning: Removed 1005 rows containing non-finite values (stat_smooth).
+```
+
+```
+## Warning: Removed 1005 rows containing missing values (geom_point).
+```
+
+<img src="Beer_Brewery_Assessment_files/figure-html/alc_vs_bitter-1.png" style="display: block; margin: auto;" />
 
 
 
