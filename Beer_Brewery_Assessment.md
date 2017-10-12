@@ -190,7 +190,6 @@ library(forcats)
 
 ggplot(meds_by_state, aes(x = fct_reorder(State, ABV_Medians))) +
   geom_col(aes(y = ABV_Medians, fill = ABV_Medians)) +
-  #geom_segment() +
   xlab("States") +
   ylab("Alcohol by Volume") +
   ggtitle("Median ABV by State") +
@@ -233,6 +232,28 @@ ggplot(meds_by_state, aes(x = fct_reorder(State, IBU_Medians))) +
 #### Question 5: State with max ABV beer? State with max IBU beer?
 
 
+```r
+library(dplyr)
+All_Data %>%
+  top_n(1,ABV) %>%
+select(State)
+```
+
+```
+##   State
+## 1    CO
+```
+
+```r
+All_Data %>%
+  top_n(1,IBU) %>%
+select(State)
+```
+
+```
+##   State
+## 1    OR
+```
 
 #### Question 6: Summary Statistics for ABV?
 
