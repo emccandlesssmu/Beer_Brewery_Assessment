@@ -5,9 +5,9 @@ October 5, 2017
 ## Introduction/Background
 
 Beers, Inc. has contracted with JKEM Market Research to assess the U.S. landscape of breweries and craft beer content.  Specifically, Beers, Inc. has asked JKEM to provide the answers to a few specific questions.  
-- How many breweries are present in each state?
-- Which state has the maximum alcoholic beer?
-- Which state has the most bitter beer?   
+- How many breweries are present in each state?  
+- Which state has the maximum alcoholic beer?  
+- Which state has the most bitter beer?     
 
 In addition to providing these answers, JKEM will also provide bar charts, summary statistics, and scatterplots to show further insights.  
 
@@ -190,6 +190,7 @@ library(forcats)
 
 ggplot(meds_by_state, aes(x = fct_reorder(State, ABV_Medians))) +
   geom_col(aes(y = ABV_Medians, fill = ABV_Medians)) +
+  geom_text(aes(x = max_state_abv$State, y = max_state_abv$ABV_Medians + max_state_abv$ABV_Medians *.05, label = max_state_abv$ABV_Medians), nudge_x = -.5, size = 4) +
   xlab("States") +
   ylab("Alcohol by Volume") +
   ggtitle("Median ABV by State") +
@@ -213,6 +214,7 @@ ggplot(meds_by_state, aes(x = fct_reorder(State, ABV_Medians))) +
 ```r
 ggplot(meds_by_state, aes(x = fct_reorder(State, IBU_Medians))) +
   geom_col(aes(y = IBU_Medians, fill = IBU_Medians)) +
+  geom_text(aes(x = max_state_ibu$State, y = max_state_ibu$IBU_Medians + max_state_ibu$IBU_Medians *.05, label = max_state_ibu$IBU_Medians), nudge_x = -.5, size = 4) +
   xlab("States") +
   ylab("International Bitterness Units") +
   ggtitle("Median Bitterness by State") +
