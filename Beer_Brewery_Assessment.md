@@ -7,7 +7,7 @@ October 5, 2017
 Beers, Inc. has contracted with JKEM Market Research to assess the U.S. landscape of breweries and craft beer content.  Specifically, Beers, Inc. has asked JKEM to provide the answers to a few specific questions.  
 
 - How many breweries are present in each state?  
-- Analyze median alcohol content and bitterness by state
+- Analyze median alcohol content (ABV) and bitterness (IBU) by state
 - Which state has the maximum alcoholic beer?  
 - Which state has the most bitter beer? 
 - Is there a relationship between alcohol content and bitterness?
@@ -34,7 +34,7 @@ Additional detailed information about this assessment can be found in the README
 
 ### How many breweries are present in each state?
 
-The purpose of the following code is to get a count of breweries for each state. That is handled inside the "Q1_Brewery_Per_State.R." From there we map the state abbreviations to state names, and produce a choropleth map to visually display the results. Last, we print a display table of the exact counts for each state.
+The purpose of the following r code is to get a count of breweries for each state. That is handled inside the "Q1_Brewery_Per_State.R." From there we map the state abbreviations to state names, and produce a choropleth map to visually display the results. Last, we print a display table of the exact counts for each state.
 
 ```r
 # Source brewery by state script, see script for details
@@ -181,9 +181,9 @@ sapply(All_Data, function(x) sum(is.na(x)))
 #### Key insights:
 - The ABV (Alcohol by Volume) column has 62 NAs and the IBU (International Bitterness Units) column has 1,005 NAs. No other column has NAs.
 
-### Calculating median ABV and displaying in barchart
+### Analyze median alcohol content (ABV) and display in barchart by state
 
-The purpose of the following code was to calculate the median of alcohol by volume (ABV) for each state and show a bar chart highlighting data: 
+The purpose of the following r code was to calculate the median of alcohol by volume (ABV) for each state and show a bar chart highlighting data: 
 
 
 ```r
@@ -229,7 +229,9 @@ max_state_abv
 
 
 
-### Calculating median IBU and displaying in barchart
+### Analyze median bitterness units (IBU) and display in barchart by state
+
+The purpose of the following r code was to calculate the median of bitterness units (IBU) for each state and show a bar chart highlighting data: 
 
 
 ```r
@@ -266,6 +268,8 @@ max_state_ibu
 
 ### Which states have maximum alcoholic beer (ABV) and maximum bitterness beer (IBU)?
 
+The purpose of the following r code was to identify the states with the max ABV and IBU:
+
 
 ```r
 library(dplyr)
@@ -293,11 +297,13 @@ All_Data       %>%
 ```
 
 #### Key insights, include:
-- Coldorado has the most alcoholic beer  
+- Colorado has the most alcoholic beer  
 - Oregon has the most bitter beer  
 
 
 ### Summary statistics for all beer's alcohol content (ABV)
+
+The purpose of the following r code was to better understand the ABV data:
 
 
 ```r
@@ -319,6 +325,8 @@ c(StDev = sd(All_Data$ABV, na.rm = TRUE), summary(All_Data$ABV))
 
 
 ### Relationship between alcohol content and bitterness
+
+The purpose of the following r code was to create a scatterplot to produce an eye test of the relationship between alcohol content and bitterness: 
 
 
 ```r
