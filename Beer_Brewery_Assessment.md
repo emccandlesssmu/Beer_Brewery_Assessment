@@ -5,19 +5,23 @@ October 5, 2017
 ## Introduction/Background
 
 Beers, Inc. has contracted with JKEM Market Research to assess the U.S. landscape of breweries and craft beer content.  Specifically, Beers, Inc. has asked JKEM to provide the answers to a few specific questions.  
+
 - How many breweries are present in each state?  
+- Analyze median alcohol content and bitterness by state
 - Which state has the maximum alcoholic beer?  
-- Which state has the most bitter beer?     
+- Which state has the most bitter beer? 
+- Is there a relationship between alcohol content and bitterness?
 
-In addition to providing these answers, JKEM will also provide bar charts, summary statistics, and scatterplots to show further insights.  
-
-
-## Sources
+In addition to providing these answers, JKEM will also provide bar charts, summary statistics, and scatterplots to show further insights. 
 
 
-JKEM Market Research used data from Tibbett's Beer Lovers' Association to conduct this analysis.  Data files used in this analysis:
-- Beers.csv
-- Breweries.csv
+## Sources  
+
+
+JKEM Market Research used data from Tibbett's Beer Lovers' Association to conduct this analysis.  Data files used in this analysis:  
+
+- Beers.csv  
+- Breweries.csv  
 
 
 ## Additional Information
@@ -33,16 +37,11 @@ Additional detailed information about this assessment can be found in the README
 The purpose of the following code is to get a count of breweries for each state. That is handled inside the "Q1_Brewery_Per_State.R." From there we map the state abbreviations to state names, and produce a choropleth map to visually display the results. Last, we print a display table of the exact counts for each state.
 
 ```r
-# Source the script for brewery by state analysis from analysis folder
+# Source brewery by state script, see script for details
 source('./analysis/Q1_Brewery_Per_State.R')
 
-#install.packages("choroplethr")
-#install.packages("choroplethrMaps")
-library(choroplethr)
-map_data <- State_Counts
-names(map_data) <- c("region.abb", "value")
-map_data$region <- tolower(state.name[match(map_data$region.abb,state.abb)])
-map_data$region[is.na(map_data$region)] <- "district of columbia"
+# Use the state_choropleth function from the choroplethr package to create a 
+# display map of brewery count by state
 state_choropleth(map_data,
                  title = "U.S. Distribution of Breweries",
                  legend = "Number of Breweries",
@@ -52,6 +51,7 @@ state_choropleth(map_data,
 <img src="Beer_Brewery_Assessment_files/figure-html/brewery_by_state-1.png" style="display: block; margin: auto;" />
 
 ```r
+# Use the kable function to print out display quality table to the report
 knitr::kable(cbind(State_Counts[1:26, ], rbind(State_Counts[27:51, ], c("", ""))))
 ```
 
@@ -88,18 +88,19 @@ MS               2
 
 
 #### Key insights:  
-- Colorado (47), California (39), and Michigan (32) have the most breweries.  
-- Other top states with 25+ breweries, include Oregon (29), Texas (28), and Pennsylvania (25).  
+- Colorado (47), California (39), and Michigan (32) have the most breweries
+- Other top states with 25+ breweries, include Oregon (29), Texas (28), and Pennsylvania (25)  
 
 
-### Which state has the maximum alcoholic beer?
-
+### Merging beers and breweries data
 
 The purpose of the following r code is to merge the Beers.csv data set that has AVB (Alcohol by Volume of Beer) by beer with the Breweries.csv dataset that has beers by state.  The new merged file is called Merged_Data.csv.  We also ran the top 6 records and bottom 6 records to check success of merge.
 
 
 ```r
+# Source merging script, see script for details
 source('./analysis/Q2_Merge.R')
+# View top 6 rows of merged data
 head(All_Data, 6)
 ```
 
@@ -128,6 +129,7 @@ head(All_Data, 6)
 ```
 
 ```r
+# View bottom 6 rows of merged data
 tail(All_Data, 6)
 ```
 
@@ -157,13 +159,14 @@ tail(All_Data, 6)
 
 
 #### Key insights:
-- The output show that the the two data sets are successfully merged into Merged_Data.csv.
+- The output show that the the two data sets are successfully merged into Merged_Data.csv. 
 
 
 The purpose of the following r code is to determine the number of NAs in each column.
 
 
 ```r
+# Use sapply to get a count of NAs for each column in the merged All_Data object
 sapply(All_Data, function(x) sum(is.na(x)))    
 ```
 
@@ -178,19 +181,23 @@ sapply(All_Data, function(x) sum(is.na(x)))
 #### Key insights:
 - The ABV (Alcohol by Volume) column has 62 NAs and the IBU (International Bitterness Units) column has 1,005 NAs. No other column has NAs.
 
+### Calculating median ABV and displaying in barchart
 
 The purpose of the following code was to calculate the median of alcohol by volume (ABV) for each state and show a bar chart highlighting data: 
 
 
 ```r
+# Source file to calc median IBU and ABV, see script for details
 source("./analysis/Q4_Med_IBU_ABV.R")
 
+# Load libraries for plotting
 library(ggplot2)
 library(forcats)
 
+# Create ggplot with medians in ascending order, with a label on the maximum ABV
 ggplot(meds_by_state, aes(x = fct_reorder(State, ABV_Medians))) +
   geom_col(aes(y = ABV_Medians, fill = ABV_Medians)) +
-  annotate("text", x = max_state_abv$State, y = max_state_abv$ABV_Medians + max_state_abv$ABV_Medians *.05, label = max_state_abv$ABV_Medians,  size = 3) +
+  annotate("text", x = max_state_abv$State[1], y = max_state_abv$ABV_Medians[1] + max_state_abv$ABV_Medians[1] *.05, label = max_state_abv$ABV_Medians[1],  size = 3) +
   xlab("States") +
   ylab("Alcohol by Volume") +
   ggtitle("Median ABV by State") +
@@ -202,19 +209,34 @@ ggplot(meds_by_state, aes(x = fct_reorder(State, ABV_Medians))) +
 
 <img src="Beer_Brewery_Assessment_files/figure-html/meds_abv-1.png" style="display: block; margin: auto;" />
 
+```r
+# Print out the state(s) with maximum ABV
+max_state_abv
+```
+
+```
+## # A tibble: 2 x 2
+##    State ABV_Medians
+##   <fctr>       <dbl>
+## 1     DC      0.0625
+## 2     KY      0.0625
+```
 
 
-#### Key insights, include:
+
+#### Key insights, include:  
+- Analysis of median ABV shows Washington D.C. and Kentucky tied for highest with ABV of 0.0625.
 
 
 
-### Which state has the most bitter beer?  
+### Calculating median IBU and displaying in barchart
 
 
 ```r
+# Create ggplot with medians in ascending order, with a label on the maximum IBU
 ggplot(meds_by_state, aes(x = fct_reorder(State, IBU_Medians))) +
   geom_col(aes(y = IBU_Medians, fill = IBU_Medians)) +
-  annotate("text", x = max_state_ibu$State, y = max_state_ibu$IBU_Medians + max_state_ibu$IBU_Medians *.05, label = max_state_ibu$IBU_Medians, size = 3) +
+  annotate("text", x = max_state_ibu$State[1], y = max_state_ibu$IBU_Medians[1] + max_state_ibu$IBU_Medians[1] *.05, label = max_state_ibu$IBU_Medians[1], size = 3) +
   xlab("States") +
   ylab("International Bitterness Units") +
   ggtitle("Median Bitterness by State") +
@@ -224,21 +246,33 @@ ggplot(meds_by_state, aes(x = fct_reorder(State, IBU_Medians))) +
   )
 ```
 
-```
-## Warning: Removed 1 rows containing missing values (position_stack).
-```
-
 <img src="Beer_Brewery_Assessment_files/figure-html/meds_ibu-1.png" style="display: block; margin: auto;" />
 
+```r
+# Print out the state(s) with maximum ABV
+max_state_ibu
+```
 
-#### Question 5: State with max ABV beer? State with max IBU beer?
+```
+## # A tibble: 1 x 2
+##    State IBU_Medians
+##   <fctr>       <dbl>
+## 1     ME          61
+```
+
+#### Key insights, include:  
+- Analysis of median IBU shows Maine with highest with IBU of 61.
+
+
+### Which states have maximum alcoholic beer (ABV) and maximum bitterness beer (IBU)?
 
 
 ```r
 library(dplyr)
-All_Data %>%
+# Use dplyr pipeline to get highest ABV value(s), then select state(s)
+All_Data       %>%
   top_n(1,ABV) %>%
-select(State)
+  select(State)
 ```
 
 ```
@@ -247,9 +281,10 @@ select(State)
 ```
 
 ```r
-All_Data %>%
+# Use dplyr pipeline to get highest IBU value(s), then select state(s)
+All_Data       %>%
   top_n(1,IBU) %>%
-select(State)
+  select(State)
 ```
 
 ```
@@ -257,10 +292,16 @@ select(State)
 ## 1    OR
 ```
 
-#### Question 6: Summary Statistics for ABV?
+#### Key insights, include:
+- Coldorado has the most alcoholic beer  
+- Oregon has the most bitter beer  
+
+
+### Summary statistics for all beer's alcohol content (ABV)
 
 
 ```r
+# Concatenate standard deviation calculation with standard summary statistics
 c(StDev = sd(All_Data$ABV, na.rm = TRUE), summary(All_Data$ABV))
 ```
 
@@ -271,30 +312,32 @@ c(StDev = sd(All_Data$ABV, na.rm = TRUE), summary(All_Data$ABV))
 ##  0.12800000 62.00000000
 ```
 
-#### Question 7: Alcohol by Volume vs International Bitterness Units scatterplot with line of best fit
+#### Key insights, include:
+- The range of ABV is [0.001, 0.128]
+- The median ABV is 0.056
+- The mean ABV is 0.059, meaning the data are skewed slightly to the right
+
+
+### Relationship between alcohol content and bitterness
 
 
 ```r
+# Create ggplot of ABV vs IBU, add a line of best fit to easily detect any relationship
 ggplot(All_Data, aes(x=ABV, y=IBU)) +
     ggtitle('Relationship Between Alcohol by Volume and International Bitterness Units') +
     labs(y= "International Bitterness Units", x = "Alcohol by Volume") +
     xlim(0, .15) +
     ylim(0, 150) +
     geom_point(shape=1, color='red') +    
-    geom_smooth(method=lm,   
-                se=FALSE)    
-```
-
-```
-## Warning: Removed 1005 rows containing non-finite values (stat_smooth).
-```
-
-```
-## Warning: Removed 1005 rows containing missing values (geom_point).
+    geom_smooth(method=lm, se=FALSE)    
 ```
 
 <img src="Beer_Brewery_Assessment_files/figure-html/alc_vs_bitter-1.png" style="display: block; margin: auto;" />
 
+#### Key Insights:
 
+There is an apparent positive relationship between bitterness and alcohol content. This is to be expected because alcohol generally has a bitter taste.
 
-### Conclusion
+## Conclusions
+
+JKEM has conclused that the top three states with the most breweries are Colorado (47), California (39), and Michigan (32). While there are the most breweries present in those states, the states that have the highest median alcohol content are Kentucky and Washington DC, with a median ABV of 0.0625. Additionally, the states with the highest median bitterness score is Maine with median IBU of 61. The state with the maximum alcohol content beer is Coldorado, and the state with the most bitter beer is Oregon. Finally, there is an apparent positive relationship between bitterness and alcohol content as shown by the groupings and positive slope found in the scatterplot.
