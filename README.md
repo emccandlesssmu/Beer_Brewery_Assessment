@@ -46,6 +46,6 @@ This repository contains all analysis related to JKEM's reseaerch for Beers, Inc
 
 #### Contact
 
-If there are any questions about the content of this analysis, please contact [Eric McCandless](mailto:emccandless@smu.edu) or [Jordan Kassof](jkassof@smu.edu).
+If there are any questions about the content of this analysis, please contact [Eric McCandless](mailto:emccandless@smu.edu) or [Jordan Kassof](mailto:jkassof@smu.edu).
 
 ## [Click Here to view fully rendered HTML report](http://htmlpreview.github.io/?https://github.com/emccandlesssmu/Beer_Brewery_Assessment/blob/master/Beer_Brewery_Assessment.html)
